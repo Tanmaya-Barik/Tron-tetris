@@ -1,0 +1,36 @@
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(5, 10, 21, 0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+  color: var(--bright-white);
+}
+
+.overlay-title {
+  font-family: var(--font-title);
+  font-size: 2.5rem;
+  color: var(--accent-red);
+  text-shadow: 0 0 20px var(--accent-red);
+  margin-bottom: 1rem;
+  animation: pulseGlow 2s infinite;
+}
+
+.overlay-score {
+  font-family: var(--font-score);
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: var(--neon-cyan);
+}
+
+.paused-title {
+  color: var(--neon-cyan);
+  text-shadow: var(--glow-cyan-strong);
+}

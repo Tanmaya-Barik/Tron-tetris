@@ -1,0 +1,61 @@
+/* TRON Legacy Inspired Color Palette and CSS Variables */
+:root {
+  /* Color Palette */
+  --bg-deep-black: #050a15;
+  --bg-dark-navy: #0a1128;
+  --neon-cyan: #00f0ff;
+  --electric-blue: #0077ff;
+  --bright-white: #ffffff;
+  
+  --accent-magenta: #ff00ff;
+  --accent-orange: #ff5500;
+  --accent-green: #00ff66;
+  --accent-red: #ff003c;
+  --accent-yellow: #ffee00;
+  --accent-purple: #9d00ff;
+  --accent-cyan: #00f0ff;
+
+  /* Glow Definitions */
+  --glow-cyan-soft: 0 0 5px rgba(0, 240, 255, 0.4);
+  --glow-cyan-medium: 0 0 10px rgba(0, 240, 255, 0.7), 0 0 20px rgba(0, 240, 255, 0.4);
+  --glow-cyan-strong: 0 0 15px rgba(0, 240, 255, 0.9), 0 0 30px rgba(0, 240, 255, 0.6), 0 0 45px rgba(0, 240, 255, 0.4);
+  
+  --glow-white: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
+
+  /* Glassmorphism */
+  --glass-bg: rgba(10, 17, 40, 0.6);
+  --glass-border: rgba(0, 240, 255, 0.3);
+  --glass-blur: blur(10px);
+
+  /* Grid lines */
+  --grid-line-color: rgba(0, 240, 255, 0.1);
+  
+  /* Fonts */
+  --font-primary: 'Rajdhani', sans-serif;
+  --font-title: 'Orbitron', sans-serif;
+  --font-score: 'Audiowide', cursive;
+  --font-text: 'Exo 2', sans-serif;
+
+  /* Block sizes (will be adjusted via JS or media queries if necessary) */
+  --cell-size: 30px;
+  --board-width: calc(10 * var(--cell-size));
+  --board-height: calc(20 * var(--cell-size));
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --cell-size: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --cell-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --cell-size: 18px; /* Fit 20x10 on small mobile screens */
+  }
+}

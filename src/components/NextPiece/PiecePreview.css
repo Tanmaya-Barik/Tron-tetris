@@ -1,0 +1,42 @@
+.preview-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: calc(var(--cell-size) * 5);
+}
+
+.preview-panel.square {
+  height: calc(var(--cell-size) * 5);
+  justify-content: center;
+}
+
+.preview-grid-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.preview-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-grid .cell {
+  /* Slightly smaller cells for previews */
+  width: calc(var(--cell-size) * 0.8);
+  height: calc(var(--cell-size) * 0.8);
+  border-width: 1.5px;
+}
+
+.preview-grid > div {
+  display: flex;
+}
+
+.empty-preview {
+  width: calc(var(--cell-size) * 3.2);
+  height: calc(var(--cell-size) * 3.2);
+}

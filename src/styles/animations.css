@@ -1,0 +1,83 @@
+/* TRON Legacy Inspired Animations */
+
+@keyframes pulseGlow {
+  0% { box-shadow: var(--glow-cyan-soft); }
+  50% { box-shadow: var(--glow-cyan-medium); }
+  100% { box-shadow: var(--glow-cyan-soft); }
+}
+
+@keyframes boardPulse {
+  0% {
+    border-color: rgba(0, 240, 255, 0.4);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3), inset 0 0 15px rgba(0, 240, 255, 0.2);
+  }
+  50% {
+    border-color: rgba(0, 240, 255, 0.9);
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.6), inset 0 0 25px rgba(0, 240, 255, 0.4);
+  }
+  100% {
+    border-color: rgba(0, 240, 255, 0.4);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3), inset 0 0 15px rgba(0, 240, 255, 0.2);
+  }
+}
+
+@keyframes floatEffect {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes perspectiveGridMove {
+  0% {
+    background-position: center 0;
+  }
+  100% {
+    background-position: center 40px; /* Must match grid cell size */
+  }
+}
+
+@keyframes blockSpawn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes lineClearFlash {
+  0% {
+    background-color: var(--bright-white);
+    box-shadow: var(--glow-white);
+    opacity: 1;
+  }
+  50% {
+    background-color: var(--neon-cyan);
+    box-shadow: var(--glow-cyan-strong);
+    opacity: 0.8;
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: none;
+    opacity: 0;
+  }
+}
+
+@keyframes hardDropStreak {
+  0% {
+    opacity: 1;
+    height: 100%;
+    transform: scaleY(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleY(0.2);
+  }
+}
+
+@keyframes pulseText {
+  0%, 100% { opacity: 0.8; text-shadow: 0 0 10px currentColor; }
+  50% { opacity: 1; text-shadow: 0 0 20px currentColor, 0 0 30px currentColor; }
+}

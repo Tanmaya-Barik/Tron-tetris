@@ -1,0 +1,31 @@
+export const BOARD_WIDTH = 10;
+export const BOARD_HEIGHT = 20;
+
+export const INITIAL_DROP_TIME = 1000;
+export const MIN_DROP_TIME = 100;
+export const DROP_TIME_DECREMENT = 50;
+
+export const POINTS = {
+  SINGLE: 100,
+  DOUBLE: 300,
+  TRIPLE: 500,
+  TETRIS: 800,
+  SOFT_DROP: 1,
+  HARD_DROP: 2,
+  TSPIN_MINI: 100,
+  TSPIN_MINI_SINGLE: 200,
+  TSPIN_MINI_DOUBLE: 400,
+  TSPIN: 400,
+  TSPIN_SINGLE: 800,
+  TSPIN_DOUBLE: 1200,
+  TSPIN_TRIPLE: 1600,
+  PERFECT_CLEAR: 2000,
+};
+
+// State enum
+export const GAME_STATE = {
+  START: 'START',
+  PLAYING: 'PLAYING',
+  PAUSED: 'PAUSED',
+  GAME_OVER: 'GAME_OVER',
+};

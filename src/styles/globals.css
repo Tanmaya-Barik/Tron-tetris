@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Exo+2:wght@300;400;700&family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;500;700&display=swap');
+@import './variables.css';
+@import './animations.css';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--bg-deep-black);
+  color: var(--bright-white);
+  font-family: var(--font-primary);
+}
+
+/* Background Scene with Perspective Grid */
+.background-scene {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  background: radial-gradient(circle at center 30%, rgba(10, 17, 40, 0.9) 0%, var(--bg-deep-black) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  overflow: hidden;
+}
+
+.perspective-grid {
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  height: 40vh;
+  background-image: 
+    linear-gradient(rgba(0, 240, 255, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.3) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center bottom;
+  transform: perspective(600px) rotateX(75deg);
+  transform-origin: bottom center;
+  animation: perspectiveGridMove 2s linear infinite;
+  mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+}
+
+.ambient-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60vw;
+  height: 60vh;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* Base App Layout (Matches Reference Image) */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  z-index: 10;
+  padding: 1rem 0.5rem;
+  overflow: hidden;
+}
+
+/* Top Stats Row */
+.top-stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 800px;
+}
+
+/* Middle Game Area (Hold - Board - Next) */
+.middle-game-area {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+/* Bottom Controls */
+.bottom-controls-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Glassmorphism Panel Base */
+.glass-panel {
+  background: rgba(10, 17, 40, 0.4);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(0, 240, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glossy reflection for panels */
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), transparent);
+  pointer-events: none;
+}
+
+.panel-title {
+  font-family: var(--font-title);
+  font-size: 1rem;
+  text-transform: uppercase;
+  color: var(--bright-white);
+  text-shadow: 0 0 5px var(--neon-cyan);
+  text-align: center;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+:root {
+  /* Scale dynamically based on both viewport width and height to fit any screen */
+  --cell-size: clamp(14px, min(4.5vw, 2.7vh), 30px);
+}
+
+/* Responsive Overrides */
+@media (max-width: 900px) {
+  .top-stats-row {
+    gap: 1.5rem;
+  }
+  
+  .middle-game-area {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .top-stats-row {
+    gap: 1rem;
+    font-size: 0.8rem;
+    margin-bottom: 0;
+  }
+  
+  .middle-game-area {
+    gap: 0.5rem;
+  }
+  
+  .glass-panel {
+    padding: 0.5rem;
+  }
+}

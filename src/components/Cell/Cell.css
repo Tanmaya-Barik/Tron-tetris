@@ -1,0 +1,39 @@
+.cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transition: all 0.05s ease;
+  box-sizing: border-box;
+}
+
+/* Subtle grid line for empty cells */
+.cell:not(.filled):not(.ghost) {
+  border: 1px solid rgba(0, 240, 255, 0.08);
+}
+
+.cell.filled {
+  background-color: currentColor;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  box-shadow: 
+    0 0 6px currentColor,
+    inset 0 0 10px rgba(0, 0, 0, 0.7);
+  border-radius: 2px;
+  animation: blockSpawn 0.2s ease-out;
+  position: relative;
+  z-index: 10;
+}
+
+.cell.ghost {
+  border: 2px solid currentColor;
+  opacity: 0.15;
+  box-shadow: 0 0 5px currentColor, inset 0 0 5px currentColor;
+  border-radius: 4px;
+}
+
+.cell.clear-anim {
+  animation: lineClearFlash 0.3s ease-out;
+}
