@@ -7,7 +7,7 @@
 }
 
 .preview-panel.square {
-  height: calc(var(--cell-size) * 5);
+  min-height: calc(var(--cell-size) * 6);
   justify-content: center;
 }
 

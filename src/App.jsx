@@ -37,6 +37,8 @@ function App() {
   const [dropTime, setDropTime] = useState(null);
   
   const [hardDropStreak, setHardDropStreak] = useState(null);
+  const [isHardDropping, setIsHardDropping] = useState(false);
+  const [isClearing, setIsClearing] = useState(false);
 
   const [highScore, setHighScore] = useLocalStorage('tron-tetris-highscore', 0);
   const [settings, setSettings] = useLocalStorage('tron-tetris-settings', { sound: true, particles: 'high' });
@@ -110,7 +112,7 @@ function App() {
   }, [nextPieces, board, score, highScore, setHighScore, audio]);
 
   const handleHoldPiece = () => {
-    if (!canHold || gameState !== GAME_STATE.PLAYING) return;
+    if (!canHold || gameState !== GAME_STATE.PLAYING || isHardDropping || isClearing) return;
     
     const currentType = piece.type;
     const currentHold = holdPiece;
@@ -122,6 +124,7 @@ function App() {
   };
 
   const movePiece = (dir) => {
+    if (isHardDropping || isClearing) return;
     if (!checkCollision(piece, board, { x: dir, y: 0 })) {
       setPiece(prev => ({ ...prev, pos: { x: prev.pos.x + dir, y: prev.pos.y } }));
       audio.playMove();
@@ -129,6 +132,7 @@ function App() {
   };
 
   const drop = () => {
+    if (isHardDropping || isClearing) return;
     if (!checkCollision(piece, board, { x: 0, y: 1 })) {
       setPiece(prev => ({ ...prev, pos: { x: prev.pos.x, y: prev.pos.y + 1 } }));
     } else {
@@ -144,15 +148,18 @@ function App() {
   };
 
   const hardDrop = () => {
+    if (isHardDropping || isClearing) return;
     const dropDistance = calculateGhostPosition(piece, board);
     setHardDropStreak({ x: piece.pos.x + Math.floor(piece.shape[0].length/2), y: dropDistance });
     
+    setIsHardDropping(true);
     setPiece(prev => ({ ...prev, pos: { x: prev.pos.x, y: prev.pos.y + dropDistance } }));
     
     setTimeout(() => {
       audio.playHardDrop();
       updateBoard({ ...piece, pos: { x: piece.pos.x, y: piece.pos.y + dropDistance } });
       setHardDropStreak(null);
+      setIsHardDropping(false);
       if (particleRef.current) {
          particleRef.current.emitExplosion(
            (piece.pos.x + 1) * 30, 
@@ -161,10 +168,11 @@ function App() {
            40
          );
       }
-    }, 10);
+    }, 100);
   };
 
   const rotatePiece = (dir) => {
+    if (isHardDropping || isClearing) return;
     const rotatedPiece = rotate(piece, board, dir);
     if (rotatedPiece !== piece) {
       setPiece(rotatedPiece);
@@ -196,46 +204,65 @@ function App() {
       });
     });
 
-    let linesCleared = 0;
-    const finalBoard = newBoard.reduce((acc, row, y) => {
+    const linesToClear = [];
+    newBoard.forEach((row, y) => {
       if (row.findIndex(cell => cell[0] === 0) === -1) {
-        linesCleared += 1;
-        acc.unshift(new Array(BOARD_WIDTH).fill([0, 'clear']));
-        if (particleRef.current) {
-          particleRef.current.emitLineClear(y * 30, 300, TETROMINOES[lockedPiece.type].color);
-        }
-      } else {
-        acc.push(row);
+        linesToClear.push(y);
       }
-      return acc;
-    }, []);
+    });
 
-    if (linesCleared > 0) {
-      if (linesCleared === 4) audio.playTetris();
+    if (linesToClear.length > 0) {
+      setIsClearing(true);
+      linesToClear.forEach(y => {
+        newBoard[y] = newBoard[y].map(cell => [cell[0], 'clear-anim']);
+      });
+      setBoard(newBoard);
+      
+      if (linesToClear.length === 4) audio.playTetris();
       else audio.playLineClear();
       
-      const { scoreAdded, isBackToBack: newB2B } = calculateScore(linesCleared, level, combo, isBackToBack, false);
-      setScore(prev => prev + scoreAdded);
-      setIsBackToBack(newB2B);
-      setCombo(prev => prev + 1);
-      setLines(prev => prev + linesCleared);
-      
-      const newLevel = Math.floor((lines + linesCleared) / 10) + 1;
-      if (newLevel > level) {
-        setLevel(newLevel);
-        setDropTime(Math.max(MIN_DROP_TIME, INITIAL_DROP_TIME - (newLevel - 1) * DROP_TIME_DECREMENT));
-      }
+      setTimeout(() => {
+        let linesCleared = 0;
+        const finalBoard = newBoard.reduce((acc, row, y) => {
+          if (linesToClear.includes(y)) {
+            linesCleared += 1;
+            acc.unshift(new Array(BOARD_WIDTH).fill([0, 'clear']));
+            if (particleRef.current) {
+              particleRef.current.emitLineClear(y * 30, 300, TETROMINOES[lockedPiece.type].color);
+            }
+          } else {
+            acc.push(row);
+          }
+          return acc;
+        }, []);
+
+        const { scoreAdded, isBackToBack: newB2B } = calculateScore(linesCleared, level, combo, isBackToBack, false);
+        setScore(prev => prev + scoreAdded);
+        setIsBackToBack(newB2B);
+        setCombo(prev => prev + 1);
+        setLines(prev => prev + linesCleared);
+        
+        const newLevel = Math.floor((lines + linesCleared) / 10) + 1;
+        if (newLevel > level) {
+          setLevel(newLevel);
+          setDropTime(Math.max(MIN_DROP_TIME, INITIAL_DROP_TIME - (newLevel - 1) * DROP_TIME_DECREMENT));
+        }
+
+        setBoard(finalBoard);
+        setCanHold(true);
+        setIsClearing(false);
+        spawnNextPiece();
+      }, 400);
     } else {
       setCombo(0);
       audio.playDrop();
+      setBoard(newBoard);
+      setCanHold(true);
+      spawnNextPiece();
     }
-
-    setBoard(finalBoard);
-    setCanHold(true);
-    spawnNextPiece();
   };
 
-  useGameLoop(drop, dropTime, gameState === GAME_STATE.PLAYING);
+  useGameLoop(drop, dropTime, gameState === GAME_STATE.PLAYING && !isClearing && !isHardDropping);
 
   const pauseGame = () => {
     if (gameState === GAME_STATE.PLAYING) {
@@ -256,27 +283,8 @@ function App() {
     pauseGame
   });
 
-  const displayBoard = board.map(row => [...row]);
-  if (piece && gameState !== GAME_STATE.GAME_OVER) {
-    const ghostY = piece.pos.y + calculateGhostPosition(piece, board);
-    piece.shape.forEach((row, y) => {
-      row.forEach((value, x) => {
-        if (value !== 0) {
-          const gy = y + ghostY;
-          if (gy >= 0 && gy < 20) displayBoard[gy][x + piece.pos.x] = [piece.type, 'clear', 'ghost'];
-        }
-      });
-    });
-
-    piece.shape.forEach((row, y) => {
-      row.forEach((value, x) => {
-        if (value !== 0) {
-          const ay = y + piece.pos.y;
-          if (ay >= 0 && ay < 20) displayBoard[ay][x + piece.pos.x] = [piece.type, 'clear', 'active'];
-        }
-      });
-    });
-  }
+  const displayBoard = board;
+  const ghostY = piece ? piece.pos.y + calculateGhostPosition(piece, board) : 0;
 
   // Hold and Next Panels
   const holdPanel = (
@@ -327,7 +335,11 @@ function App() {
           {/* Center: Board */}
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Board 
-              board={displayBoard} 
+              board={displayBoard}
+              piece={piece}
+              ghostY={ghostY}
+              isHardDropping={isHardDropping}
+              gameState={gameState}
               particleRef={particleRef} 
               hardDropStreak={hardDropStreak} 
               particleDensity={settings.particles}

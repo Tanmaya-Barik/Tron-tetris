@@ -47,21 +47,22 @@
   }
 }
 
-@keyframes lineClearFlash {
+@keyframes disintegrate {
   0% {
     background-color: var(--bright-white);
     box-shadow: var(--glow-white);
     opacity: 1;
+    transform: scale(1);
   }
   50% {
     background-color: var(--neon-cyan);
     box-shadow: var(--glow-cyan-strong);
     opacity: 0.8;
+    transform: scale(0.8);
   }
   100% {
-    background-color: transparent;
-    box-shadow: none;
     opacity: 0;
+    transform: scale(0);
   }
 }
 

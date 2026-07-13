@@ -43,29 +43,27 @@ const TouchControls = ({ move, drop, rotate, hardDrop, holdPiece, gameState, pau
         </button>
       </div>
 
-      {/* Mobile Touch Controls (Only visible on mobile) */}
-      {isMobile && (
-        <div className="touch-controls">
-          <div className="touch-row">
-            <button className="touch-btn" onPointerDown={(e) => { e.preventDefault(); holdPiece(); }} onContextMenu={(e) => e.preventDefault()}>H</button>
-            <button className="touch-btn" onPointerDown={(e) => { e.preventDefault(); hardDrop(); }} onContextMenu={(e) => e.preventDefault()}>⤓</button>
-            <button className="touch-btn" onPointerDown={(e) => { e.preventDefault(); rotate(1); }} onContextMenu={(e) => e.preventDefault()}>↻</button>
-          </div>
-          <div className="touch-row" style={{ marginTop: '1rem' }}>
-            <button className="touch-btn large" onPointerDown={(e) => { e.preventDefault(); move(-1); }} onContextMenu={(e) => e.preventDefault()}>←</button>
-            <button 
-              className="touch-btn large" 
-              onPointerDown={(e) => { e.preventDefault(); startSoftDrop(); }}
-              onPointerUp={(e) => { e.preventDefault(); stopSoftDrop(); }}
-              onPointerLeave={(e) => { e.preventDefault(); stopSoftDrop(); }}
-              onContextMenu={(e) => e.preventDefault()}
-            >
-              ↓
-            </button>
-            <button className="touch-btn large" onPointerDown={(e) => { e.preventDefault(); move(1); }} onContextMenu={(e) => e.preventDefault()}>→</button>
-          </div>
+      {/* Touch Controls (Always visible as requested) */}
+      <div className="touch-controls">
+        <div className="touch-row">
+          <button className="touch-btn" onPointerDown={(e) => { e.preventDefault(); holdPiece(); }} onContextMenu={(e) => e.preventDefault()}>H</button>
+          <button className="touch-btn" onPointerDown={(e) => { e.preventDefault(); hardDrop(); }} onContextMenu={(e) => e.preventDefault()}>⤓</button>
+          <button className="touch-btn" onPointerDown={(e) => { e.preventDefault(); rotate(1); }} onContextMenu={(e) => e.preventDefault()}>↻</button>
         </div>
-      )}
+        <div className="touch-row" style={{ marginTop: '1rem' }}>
+          <button className="touch-btn large" onPointerDown={(e) => { e.preventDefault(); move(-1); }} onContextMenu={(e) => e.preventDefault()}>←</button>
+          <button 
+            className="touch-btn large" 
+            onPointerDown={(e) => { e.preventDefault(); startSoftDrop(); }}
+            onPointerUp={(e) => { e.preventDefault(); stopSoftDrop(); }}
+            onPointerLeave={(e) => { e.preventDefault(); stopSoftDrop(); }}
+            onContextMenu={(e) => e.preventDefault()}
+          >
+            ↓
+          </button>
+          <button className="touch-btn large" onPointerDown={(e) => { e.preventDefault(); move(1); }} onContextMenu={(e) => e.preventDefault()}>→</button>
+        </div>
+      </div>
     </div>
   );
 };

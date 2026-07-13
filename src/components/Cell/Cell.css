@@ -22,9 +22,16 @@
     0 0 6px currentColor,
     inset 0 0 10px rgba(0, 0, 0, 0.7);
   border-radius: 2px;
-  animation: blockSpawn 0.2s ease-out;
   position: relative;
   z-index: 10;
+}
+
+.cell.filled:not(.active) {
+  animation: blockSpawn 0.2s ease-out;
+}
+
+.cell.active {
+  transition: none;
 }
 
 .cell.ghost {
@@ -35,5 +42,5 @@
 }
 
 .cell.clear-anim {
-  animation: lineClearFlash 0.3s ease-out;
+  animation: disintegrate 0.3s ease-in forwards;
 }
