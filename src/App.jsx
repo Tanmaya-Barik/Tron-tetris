@@ -40,7 +40,7 @@ function App() {
   const [isHardDropping, setIsHardDropping] = useState(false);
   const [isClearing, setIsClearing] = useState(false);
 
-  const [highScore, setHighScore] = useLocalStorage('tron-tetris-highscore', 0);
+  const [highScore, setHighScore] = useState(0);
   const [settings, setSettings] = useLocalStorage('tron-tetris-settings', { sound: true, particles: 'high' });
 
   const particleRef = useRef();
